@@ -9,16 +9,25 @@ import java.util.Set;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * The class that represents the cart with books that was rented
+ */
 @Entity
 @Data
 @NoArgsConstructor
 public class RentedBookCart {
 
+  /**
+   * The individual number of the cart
+   */
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long bookCartId;
 
 
+  /**
+   * The container of the rented books
+   */
   @OneToMany
   private Set<RentedBook> rentedBooks;
 
