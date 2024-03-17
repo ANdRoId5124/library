@@ -5,8 +5,11 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -18,6 +21,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
+@Table(name = "users",
+    uniqueConstraints = {@UniqueConstraint(name = "unique_c_email", columnNames = "email")})
 public class User {
 
   /**
@@ -43,7 +48,7 @@ public class User {
    * Email of the user that used to registration or authorization to the system
    */
   @Column
-  private String login;
+  private String email;
 
   /**
    * Password for the registration of authorization
@@ -55,6 +60,7 @@ public class User {
    * The role of the user that used to define of action that user can do in the system
    */
   @ManyToOne
+  @JoinColumn(name = "role_id")
   private Role role;
 
   /**
@@ -62,13 +68,14 @@ public class User {
    * "container" of the books that user rented from the library and hasn't been returned
    */
   @OneToOne
+  @JoinColumn(name = "rented_book_cart_id")
   private RentedBookCart cart;
 
-  public User(String userName, String userSurname, String login, String password, Role role,
+  public User(String userName, String userSurname, String email, String password, Role role,
       RentedBookCart cart) {
     this.userName = userName;
     this.userSurname = userSurname;
-    this.login = login;
+    this.email = email;
     this.password = password;
     this.role = role;
     this.cart = cart;
