@@ -14,6 +14,9 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * The class that represents the cart with books that was rented
+ */
 @Entity
 @Data
 @NoArgsConstructor
@@ -22,12 +25,18 @@ import lombok.NoArgsConstructor;
 @Table(name = "rented_book_carts")
 public class RentedBookCart {
 
+  /**
+   * The individual number of the cart
+   */
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   @Column(name = "rented_book_cart_id")
   private Long rentedBookCartId;
 
 
+  /**
+   * The container of the rented books
+   */
   @OneToMany
   @JoinColumn(name = "rented_book_id")
   private Set<RentedBook> rentedBooks;

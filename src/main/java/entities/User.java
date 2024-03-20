@@ -15,6 +15,11 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+/**
+ * Class user represents entity of user of library. For example users with roles: Admin, Client
+ *
+ * @Author: Andrei Bychek
+ */
 @Entity
 @Data
 @NoArgsConstructor
@@ -24,26 +29,52 @@ import lombok.NoArgsConstructor;
     uniqueConstraints = {@UniqueConstraint(name = "unique_c_email", columnNames = "email")})
 public class User {
 
+  /**
+   * The individual number of the user
+   */
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long userId;
 
+  /**
+   * The first name of the user
+   */
   @Column
   private String userName;
 
+  /**
+   * The surname of the user
+   */
   @Column
   private String userSurname;
 
+  entities
   @Column(nullable = false)
+
+  /**
+   * Email of the user that used to registration or authorization to the system
+   */
+  
+  master
   private String email;
 
+  /**
+   * Password for the registration of authorization
+   */
   @Column
   private String password;
 
+  /**
+   * The role of the user that used to define of action that user can do in the system
+   */
   @ManyToOne
   @JoinColumn(name = "role_id")
   private Role role;
 
+  /**
+   * Represents object of the rented books cart
+   * "container" of the books that user rented from the library and hasn't been returned
+   */
   @OneToOne
   @JoinColumn(name = "rented_book_cart_id")
   private RentedBookCart cart;
