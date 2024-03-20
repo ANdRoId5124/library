@@ -9,12 +9,16 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import java.util.Date;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "rented_books")
 public class RentedBook {
 
@@ -36,10 +40,4 @@ public class RentedBook {
   @Column
   private boolean isReturned;
 
-  public RentedBook(Book book, Date rentalDate, Date returnDate, boolean isReturned) {
-    this.book = book;
-    this.rentalDate = rentalDate;
-    this.returnDate = returnDate;
-    this.isReturned = isReturned;
-  }
 }

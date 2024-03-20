@@ -6,12 +6,16 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "books")
 public class Book {
 
@@ -25,9 +29,4 @@ public class Book {
 
   @Column
   private String author;
-
-  public Book(String title, String author) {
-    this.title = title;
-    this.author = author;
-  }
 }

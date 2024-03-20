@@ -9,12 +9,16 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import java.util.Set;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "rented_book_carts")
 public class RentedBookCart {
 
@@ -28,7 +32,4 @@ public class RentedBookCart {
   @JoinColumn(name = "rented_book_id")
   private Set<RentedBook> rentedBooks;
 
-  public RentedBookCart(Set<RentedBook> rentedBooks) {
-    this.rentedBooks = rentedBooks;
-  }
 }
