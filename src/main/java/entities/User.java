@@ -10,6 +10,8 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -21,6 +23,8 @@ import lombok.NoArgsConstructor;
 @Entity
 @Data
 @NoArgsConstructor
+@AllArgsConstructor
+@Builder
 @Table(name = "users",
     uniqueConstraints = {@UniqueConstraint(name = "unique_c_email", columnNames = "email")})
 public class User {
@@ -44,10 +48,14 @@ public class User {
   @Column
   private String userSurname;
 
+  entities
+  @Column(nullable = false)
+
   /**
    * Email of the user that used to registration or authorization to the system
    */
-  @Column
+  
+  master
   private String email;
 
   /**
@@ -70,14 +78,4 @@ public class User {
   @OneToOne
   @JoinColumn(name = "rented_book_cart_id")
   private RentedBookCart cart;
-
-  public User(String userName, String userSurname, String email, String password, Role role,
-      RentedBookCart cart) {
-    this.userName = userName;
-    this.userSurname = userSurname;
-    this.email = email;
-    this.password = password;
-    this.role = role;
-    this.cart = cart;
-  }
 }
