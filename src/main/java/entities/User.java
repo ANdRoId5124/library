@@ -48,14 +48,12 @@ public class User {
   @Column
   private String userSurname;
 
-  entities
-  @Column(nullable = false)
 
   /**
    * Email of the user that used to registration or authorization to the system
    */
-  
-  master
+
+  @Column(nullable = false)
   private String email;
 
   /**
@@ -72,8 +70,8 @@ public class User {
   private Role role;
 
   /**
-   * Represents object of the rented books cart
-   * "container" of the books that user rented from the library and hasn't been returned
+   * Represents object of the rented books cart "container" of the books that user rented from the
+   * library and hasn't been returned
    */
   @OneToOne
   @JoinColumn(name = "rented_book_cart_id")
