@@ -1,4 +1,4 @@
-package dto;
+package com.andrei.LibraryManager.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

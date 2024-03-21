@@ -1,9 +1,9 @@
-package services;
+package com.andrei.LibraryManager.services;
 
-import entities.User;
+import com.andrei.LibraryManager.entities.User;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
-import repositories.UserRepository;
+import com.andrei.LibraryManager.repositories.UserRepository;
 
 @Service
 public class UserService {

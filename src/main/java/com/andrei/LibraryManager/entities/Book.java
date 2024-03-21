@@ -1,4 +1,4 @@
-package entities;
+package com.andrei.LibraryManager.entities;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -12,28 +12,35 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 /**
- * The class that represents the roles of the user
+ * The class that represents a book that is in the library
+ *
+ * @Author: Andrei Bychek
  */
 @Entity
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Table(name = "roles")
-public class Role {
+@Table(name = "books")
+public class Book {
 
   /**
-   * The individual number of the role
+   * The individual number of the book
    */
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "role_id")
-  private Long roleId;
+  @Column(name = "book_id")
+  private Long bookId;
 
   /**
-   * The role name
-   * For example: Admin, client
+   * The title(name) of the book
    */
   @Column
-  private String roleName;
+  private String title;
+
+  /**
+   * The name and the last name of the author
+   */
+  @Column
+  private String author;
 }

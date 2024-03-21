@@ -1,11 +1,10 @@
-package services;
+package com.andrei.LibraryManager.services;
 
-import entities.RentedBookCart;
-import entities.User;
+import com.andrei.LibraryManager.entities.RentedBookCart;
 import java.util.HashSet;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
-import repositories.RentedBookCartRepository;
+import com.andrei.LibraryManager.repositories.RentedBookCartRepository;
 
 @Service
 public class RentedBookCartService {
@@ -20,7 +19,8 @@ public class RentedBookCartService {
   }
 
   public RentedBookCart addRentedBookCart() {
-    RentedBookCart cart = new RentedBookCart(new HashSet<>());
+    RentedBookCart cart = RentedBookCart.builder().rentedBooks(new HashSet<>())
+        .build();
     return RENTED_BOOK_CART_REPOSITORY.save(cart);
   }
 
