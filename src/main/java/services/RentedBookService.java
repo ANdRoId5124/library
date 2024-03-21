@@ -4,6 +4,7 @@ import entities.Book;
 import entities.RentedBook;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Optional;
 import java.util.Set;
 import java.util.TimeZone;
 import org.springframework.stereotype.Service;
@@ -33,18 +34,29 @@ public class RentedBookService {
     return RENTED_BOOK_REPOSITORY.save(rentedBook);
   }
 
-  public Set<RentedBook> getAllUsersRentedBooks(String userEmail) {
-    return RENTED_BOOK_CART_SERVICE.getRentedBookCart(userEmail).getRentedBooks();
+  public Optional<Set<RentedBook>> getAllUserRentedBooks(String userEmail) {
+    if (RENTED_BOOK_CART_SERVICE.getRentedBookCart(userEmail).isEmpty()) {
+      Optional<Set<RentedBook>> emptySet = Optional.empty();
+      return emptySet;
+    }
+    Optional<Set<RentedBook>> rentedBooks =
+        Optional.of(RENTED_BOOK_CART_SERVICE.getRentedBookCart(userEmail).get().getRentedBooks());
+    return rentedBooks;
   }
 
-  public RentedBook getRentedBook(String userEmail, String title){ //Optional?? How to improve//
-    Set<RentedBook> books = RENTED_BOOK_CART_SERVICE.getRentedBookCart(userEmail).getRentedBooks();
-    for(RentedBook rentedBook : books){
-      if (rentedBook.getBook().getTitle().equals(title)){
-        return rentedBook;
+  public Optional<RentedBook> getRentedBook(String userEmail, String title) {
+    Optional<RentedBook> emptyBook = Optional.empty();
+    if (getAllUserRentedBooks(userEmail).isEmpty()) {
+      return emptyBook;
+    }
+    Set<RentedBook> books = getAllUserRentedBooks(userEmail).get();
+    for (RentedBook rentedBook : books) {
+      if (rentedBook.getBook().getTitle().equals(title)) {
+        Optional<RentedBook> book = Optional.of(rentedBook);
+        return book;
       }
     }
-    return null;
+    return emptyBook;
   }
 
 }
