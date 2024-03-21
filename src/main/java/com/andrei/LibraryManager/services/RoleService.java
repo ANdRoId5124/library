@@ -1,8 +1,8 @@
-package services;
+package com.andrei.LibraryManager.services;
 
-import entities.Role;
+import com.andrei.LibraryManager.entities.Role;
 import org.springframework.stereotype.Service;
-import repositories.RoleRepository;
+import com.andrei.LibraryManager.repositories.RoleRepository;
 
 @Service
 public class RoleService {
@@ -26,6 +26,6 @@ public class RoleService {
   }
 
   public Role getRoleByName(String roleName) { // check if role exist
-    return ROLE_REPOSITORY.findRoleByName(roleName);
+    return ROLE_REPOSITORY.findRoleByRoleName(roleName);
   }
 }

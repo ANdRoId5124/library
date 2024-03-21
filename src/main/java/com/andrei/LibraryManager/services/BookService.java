@@ -1,8 +1,8 @@
-package services;
+package com.andrei.LibraryManager.services;
 
-import entities.Book;
+import com.andrei.LibraryManager.entities.Book;
 import org.springframework.stereotype.Service;
-import repositories.BookRepository;
+import com.andrei.LibraryManager.repositories.BookRepository;
 
 @Service
 public class BookService {

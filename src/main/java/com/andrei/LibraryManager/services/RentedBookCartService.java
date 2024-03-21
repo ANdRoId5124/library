@@ -1,11 +1,10 @@
-package services;
+package com.andrei.LibraryManager.services;
 
-import entities.RentedBookCart;
-import entities.User;
+import com.andrei.LibraryManager.entities.RentedBookCart;
 import java.util.HashSet;
 import java.util.Optional;
 import org.springframework.stereotype.Service;
-import repositories.RentedBookCartRepository;
+import com.andrei.LibraryManager.repositories.RentedBookCartRepository;
 
 @Service
 public class RentedBookCartService {

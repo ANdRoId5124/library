@@ -1,6 +1,6 @@
-package repositories;
+package com.andrei.LibraryManager.repositories;
 
-import entities.RentedBookCart;
+import com.andrei.LibraryManager.entities.RentedBookCart;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

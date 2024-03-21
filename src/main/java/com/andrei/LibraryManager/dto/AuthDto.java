@@ -1,4 +1,4 @@
-package dto;
+package com.andrei.LibraryManager.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -7,9 +7,9 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class BookDto {
+public class AuthDto {
 
-  private String title;
+  private String email;
 
-  private String author;
+  private String password;
 }

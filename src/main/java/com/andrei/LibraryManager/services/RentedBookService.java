@@ -1,14 +1,14 @@
-package services;
+package com.andrei.LibraryManager.services;
 
-import entities.Book;
-import entities.RentedBook;
+import com.andrei.LibraryManager.entities.Book;
+import com.andrei.LibraryManager.entities.RentedBook;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TimeZone;
 import org.springframework.stereotype.Service;
-import repositories.RentedBookRepository;
+import com.andrei.LibraryManager.repositories.RentedBookRepository;
 
 @Service
 public class RentedBookService {
