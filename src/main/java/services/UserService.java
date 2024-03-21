@@ -1,6 +1,7 @@
 package services;
 
 import entities.User;
+import java.util.Optional;
 import org.springframework.stereotype.Service;
 import repositories.UserRepository;
 
@@ -17,15 +18,15 @@ public class UserService {
     return USER_REPOSITORY.save(user);
   }
 
-  public User updateUser(User user){
+  public User updateUser(User user) {
     return USER_REPOSITORY.save(user);
   }
 
-  public void deleteUser(User user){
+  public void deleteUser(User user) {
     USER_REPOSITORY.delete(user);
   }
 
-  public User getUserByEmail(String email){ // check if user exist
+  public Optional<User> getUserByEmail(String email) {
     return USER_REPOSITORY.findUserByEmail(email);
   }
 

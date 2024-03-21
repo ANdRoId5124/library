@@ -3,6 +3,7 @@ package services;
 import entities.RentedBookCart;
 import entities.User;
 import java.util.HashSet;
+import java.util.Optional;
 import org.springframework.stereotype.Service;
 import repositories.RentedBookCartRepository;
 
@@ -31,7 +32,13 @@ public class RentedBookCartService {
     return RENTED_BOOK_CART_REPOSITORY.save(cart);
   }
 
-  public RentedBookCart getRentedBookCart(String userEmail) {
-    return USER_SERVICE.getUserByEmail(userEmail).getCart();
+  public Optional<RentedBookCart> getRentedBookCart(String userEmail) {
+    if (USER_SERVICE.getUserByEmail(userEmail).isEmpty()) {
+      Optional<RentedBookCart> emptyCart = Optional.empty();
+      return emptyCart;
+    }
+    Optional<RentedBookCart> rentedBookCart = Optional.of(
+        USER_SERVICE.getUserByEmail(userEmail).get().getCart());
+    return rentedBookCart;
   }
 }
