@@ -25,8 +25,9 @@ public class RentedBookService {
   public RentedBook addRentedBook(Book book) {
     Calendar c = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
     c.add(Calendar.MONTH, +3);
-    RentedBook rentedBook = new RentedBook(book, new Date(System.currentTimeMillis()),
-        c.getTime(), false);
+    RentedBook rentedBook = RentedBook.builder().book(book).
+        rentalDate(new Date(System.currentTimeMillis())).rentalDate(c.getTime()).
+        isReturned(false).build();
     return RENTED_BOOK_REPOSITORY.save(rentedBook);
   }
 

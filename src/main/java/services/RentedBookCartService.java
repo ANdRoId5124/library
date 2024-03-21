@@ -20,7 +20,8 @@ public class RentedBookCartService {
   }
 
   public RentedBookCart addRentedBookCart() {
-    RentedBookCart cart = new RentedBookCart(new HashSet<>());
+    RentedBookCart cart = RentedBookCart.builder().rentedBooks(new HashSet<>())
+        .build();
     return RENTED_BOOK_CART_REPOSITORY.save(cart);
   }
 
