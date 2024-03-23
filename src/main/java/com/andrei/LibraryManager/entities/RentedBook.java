@@ -6,7 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.util.Date;
 import lombok.AllArgsConstructor;
@@ -38,7 +38,7 @@ public class RentedBook {
   /**
    * The object of the book that is in the library
    */
-  @OneToOne
+  @ManyToOne
   @JoinColumn(name = "book_id")
   private Book book;
 
