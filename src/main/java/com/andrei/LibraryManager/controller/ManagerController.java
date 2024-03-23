@@ -24,11 +24,11 @@ public class ManagerController {
 
   @Autowired
   public ManagerController(UserService userService, BookService bookService,
-      RentedBookService rentedBookService, RentedBookCartService r) {
+      RentedBookService rentedBookService, RentedBookCartService rentedBookCartService) {
     USER_SERVICE = userService;
     BOOK_SERVICE = bookService;
     RENTED_BOOK_SERVICE = rentedBookService;
-    this.RENTED_BOOK_CART_SERVICE = r;
+    this.RENTED_BOOK_CART_SERVICE = rentedBookCartService;
   }
 
   @PostMapping("rentBook")
