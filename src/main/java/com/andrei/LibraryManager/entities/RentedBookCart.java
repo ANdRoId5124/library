@@ -38,7 +38,7 @@ public class RentedBookCart {
    * The container of the rented books
    */
   @OneToMany
-  @JoinColumn(name = "rented_book_id")
+  @JoinColumn(name = "rented_book_cart_id")
   private Set<RentedBook> rentedBooks;
 
 }
