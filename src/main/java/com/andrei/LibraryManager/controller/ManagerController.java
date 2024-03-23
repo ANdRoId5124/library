@@ -31,7 +31,7 @@ public class ManagerController {
     this.RENTED_BOOK_CART_SERVICE = rentedBookCartService;
   }
 
-  @PostMapping("rentBook")
+  @PostMapping("rent_book")
   public ResponseEntity<?> rent(@RequestParam(name = "email") String email,
       @RequestParam(name = "title") String title) {
     if (USER_SERVICE.getUserByEmail(email).isEmpty()) {
@@ -50,6 +50,7 @@ public class ManagerController {
     user.getCart().getRentedBooks().add(
         RENTED_BOOK_SERVICE.addRentedBook(
             BOOK_SERVICE.getBookByTitle((title)).get()));
-    return new ResponseEntity<>(RENTED_BOOK_CART_SERVICE.updateRentedBookCart(user.getCart()), HttpStatus.OK);
+    return new ResponseEntity<>(RENTED_BOOK_CART_SERVICE.updateRentedBookCart(user.getCart()),
+        HttpStatus.OK);
   }
 }
