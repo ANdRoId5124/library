@@ -9,6 +9,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import java.util.Date;
+import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -60,4 +61,20 @@ public class RentedBook {
   @Column
   private boolean isReturned;
 
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+    RentedBook that = (RentedBook) o;
+    return Objects.equals(book, that.book);
+  }
+
+  @Override
+  public int hashCode() {
+    return Objects.hash(book);
+  }
 }
