@@ -26,6 +26,6 @@ public class BookService {
   }
 
   public Optional<Book> getBookByTitleAndByAuthor(String title, String author){
-    return BOOK_REPOSITORY.findBookByTitleAndByAuthor(title, author);
+    return BOOK_REPOSITORY.findBookByTitleAndAuthor(title, author);
   }
 }
