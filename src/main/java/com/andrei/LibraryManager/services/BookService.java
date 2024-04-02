@@ -25,7 +25,7 @@ public class BookService {
     BOOK_REPOSITORY.delete(book);
   }
 
-  public Optional<Book> getBookByTitle(String title){
-    return BOOK_REPOSITORY.findBookByTitle(title);
+  public Optional<Book> getBookByTitleAndByAuthor(String title, String author){
+    return BOOK_REPOSITORY.findBookByTitleAndByAuthor(title, author);
   }
 }
