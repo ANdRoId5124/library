@@ -20,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("manager")
+@RequestMapping("/manager")
 public class ManagerController {
 
   private final UserService USER_SERVICE;
