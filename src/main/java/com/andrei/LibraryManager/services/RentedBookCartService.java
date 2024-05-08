@@ -3,20 +3,17 @@ package com.andrei.LibraryManager.services;
 import com.andrei.LibraryManager.entities.RentedBookCart;
 import java.util.HashSet;
 import java.util.Optional;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.andrei.LibraryManager.repositories.RentedBookCartRepository;
 
 @Service
+@RequiredArgsConstructor
 public class RentedBookCartService {
 
   private final RentedBookCartRepository RENTED_BOOK_CART_REPOSITORY;
   private final UserService USER_SERVICE;
 
-  public RentedBookCartService(RentedBookCartRepository rentedBookCartRepository,
-      UserService userService) {
-    RENTED_BOOK_CART_REPOSITORY = rentedBookCartRepository;
-    USER_SERVICE = userService;
-  }
 
   public RentedBookCart addRentedBookCart() {
     RentedBookCart cart = RentedBookCart.builder().rentedBooks(new HashSet<>())

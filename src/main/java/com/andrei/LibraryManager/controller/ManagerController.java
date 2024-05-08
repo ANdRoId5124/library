@@ -8,7 +8,7 @@ import com.andrei.LibraryManager.services.BookService;
 import com.andrei.LibraryManager.services.RentedBookCartService;
 import com.andrei.LibraryManager.services.RentedBookService;
 import com.andrei.LibraryManager.services.UserService;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/manager")
 public class ManagerController {
 
@@ -27,15 +28,6 @@ public class ManagerController {
   private final BookService BOOK_SERVICE;
   private final RentedBookService RENTED_BOOK_SERVICE;
   private final RentedBookCartService RENTED_BOOK_CART_SERVICE;
-
-  @Autowired
-  public ManagerController(UserService userService, BookService bookService,
-      RentedBookService rentedBookService, RentedBookCartService rentedBookCartService) {
-    USER_SERVICE = userService;
-    BOOK_SERVICE = bookService;
-    RENTED_BOOK_SERVICE = rentedBookService;
-    this.RENTED_BOOK_CART_SERVICE = rentedBookCartService;
-  }
 
   @PostMapping("rent_book")
   public ResponseEntity<?> rent(@RequestParam(name = "email") String email,
@@ -62,8 +54,8 @@ public class ManagerController {
 
   @PutMapping("return_book")
   public ResponseEntity<?> return_a_book(@RequestParam(name = "email") String email,
-      @RequestParam(name = "book_title") String title){
-    if(RENTED_BOOK_SERVICE.getRentedBook(email, title).isEmpty()){
+      @RequestParam(name = "book_title") String title) {
+    if (RENTED_BOOK_SERVICE.getRentedBook(email, title).isEmpty()) {
       return new ResponseEntity<>("User or book not found", HttpStatus.NOT_FOUND);
     }
     RentedBook book = RENTED_BOOK_SERVICE.getRentedBook(email, title).get();
@@ -72,8 +64,8 @@ public class ManagerController {
   }
 
   @PostMapping("add_book_to_library")
-  public ResponseEntity<?> addBookToLibrary(@RequestBody BookDto dto){
-    if(BOOK_SERVICE.getBookByTitleAndByAuthor(dto.getTitle(), dto.getAuthor()).isPresent()){
+  public ResponseEntity<?> addBookToLibrary(@RequestBody BookDto dto) {
+    if (BOOK_SERVICE.getBookByTitleAndByAuthor(dto.getTitle(), dto.getAuthor()).isPresent()) {
       return new ResponseEntity<>("Book already exist", HttpStatus.CONFLICT);
     }
     return new ResponseEntity<>(BOOK_SERVICE.addBook(Book.builder().title(dto.getTitle()).
@@ -81,8 +73,8 @@ public class ManagerController {
   }
 
   @DeleteMapping("delete_book_from_library")
-  public ResponseEntity<?> deleteBookFromLibrary(@RequestBody BookDto dto){
-    if(BOOK_SERVICE.getBookByTitleAndByAuthor(dto.getTitle(), dto.getAuthor()).isEmpty()){
+  public ResponseEntity<?> deleteBookFromLibrary(@RequestBody BookDto dto) {
+    if (BOOK_SERVICE.getBookByTitleAndByAuthor(dto.getTitle(), dto.getAuthor()).isEmpty()) {
       return new ResponseEntity<>("Cannot find a book", HttpStatus.NOT_FOUND);
     }
     BOOK_SERVICE.deleteBook(BOOK_SERVICE.getBookByTitleAndByAuthor(dto.getTitle(), dto.getAuthor()).

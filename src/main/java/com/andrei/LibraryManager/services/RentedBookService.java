@@ -7,20 +7,17 @@ import java.util.Date;
 import java.util.Optional;
 import java.util.Set;
 import java.util.TimeZone;
+import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import com.andrei.LibraryManager.repositories.RentedBookRepository;
 
 @Service
+@RequiredArgsConstructor
 public class RentedBookService {
 
   private final RentedBookRepository RENTED_BOOK_REPOSITORY;
   private final RentedBookCartService RENTED_BOOK_CART_SERVICE;
 
-  public RentedBookService(RentedBookRepository rentedBookRepository,
-      RentedBookCartService rentedBookCartService) {
-    RENTED_BOOK_REPOSITORY = rentedBookRepository;
-    RENTED_BOOK_CART_SERVICE = rentedBookCartService;
-  }
 
   public RentedBook addRentedBook(Book book) {
     Calendar c = Calendar.getInstance(TimeZone.getTimeZone("UTC"));

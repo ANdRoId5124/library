@@ -11,7 +11,7 @@ import com.andrei.LibraryManager.services.RentedBookCartService;
 import com.andrei.LibraryManager.services.RoleService;
 import com.andrei.LibraryManager.services.UserService;
 import java.util.Optional;
-import org.springframework.beans.factory.annotation.Autowired;
+import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -20,6 +20,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("auth")
 public class AuthController {
 
@@ -27,17 +28,8 @@ public class AuthController {
   private final RentedBookCartService RENTED_BOOK_CART_SERVICE;
   private final RoleService ROLE_SERVICE;
 
-  private final JwtProvider provider;
+  private final JwtProvider PROVIDER;
 
-
-  @Autowired
-  public AuthController(UserService userService, RentedBookCartService rentedBookCartService,
-      RoleService roleService, JwtProvider provider) {
-    USER_SERVICE = userService;
-    RENTED_BOOK_CART_SERVICE = rentedBookCartService;
-    ROLE_SERVICE = roleService;
-    this.provider = provider;
-  }
 
   @PostMapping("/registration")
   public ResponseEntity<?> registrate(@RequestBody RegistrationDto dto) {
@@ -62,8 +54,8 @@ public class AuthController {
     if (userOptional.isEmpty()) {
       return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
-    String accessToken = provider.generatedAccessToken(dto.getEmail());
-    String refreshToken = provider.generateRefreshToken(dto.getEmail());
+    String accessToken = PROVIDER.generatedAccessToken(dto.getEmail());
+    String refreshToken = PROVIDER.generateRefreshToken(dto.getEmail());
 
     return new ResponseEntity<>(new AuthResponse(accessToken, refreshToken),
         HttpStatus.OK);
@@ -71,9 +63,9 @@ public class AuthController {
 
   @PostMapping("/introspect")
   public ResponseEntity<AuthResponse> introspect(@RequestBody IntrospectRequest request) {
-    boolean isValid = provider.validate(request.getRefreshToken());
+    boolean isValid = PROVIDER.validate(request.getRefreshToken());
     if (isValid) {
-      String login = provider.getLoginFromToken(request.getRefreshToken());
+      String login = PROVIDER.getLoginFromToken(request.getRefreshToken());
       return getAuth(login);
     }
     return new ResponseEntity<>(
@@ -81,8 +73,8 @@ public class AuthController {
   }
 
   private ResponseEntity<AuthResponse> getAuth(String login) {
-    String accessToken = provider.generatedAccessToken(login);
-    String refreshToken = provider.generateRefreshToken(login);
+    String accessToken = PROVIDER.generatedAccessToken(login);
+    String refreshToken = PROVIDER.generateRefreshToken(login);
 
     return new ResponseEntity<>(new AuthResponse(accessToken, refreshToken),
         HttpStatus.OK);
