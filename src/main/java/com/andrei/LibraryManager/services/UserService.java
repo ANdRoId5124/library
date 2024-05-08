@@ -3,21 +3,19 @@ package com.andrei.LibraryManager.services;
 import com.andrei.LibraryManager.entities.User;
 import java.util.Optional;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import com.andrei.LibraryManager.repositories.UserRepository;
 
 @Service
+@RequiredArgsConstructor
 public class UserService {
 
   private final UserRepository USER_REPOSITORY;
 
   private final PasswordEncoder PASSWORD_ENCODER;
 
-  public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-    this.USER_REPOSITORY = userRepository;
-    PASSWORD_ENCODER = passwordEncoder;
-  }
 
   public User createUser(User user) {
     user.setPassword(PASSWORD_ENCODER.encode(user.getPassword()));
