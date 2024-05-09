@@ -17,6 +17,7 @@ public class RentedBookService {
 
   private final RentedBookRepository RENTED_BOOK_REPOSITORY;
   private final RentedBookCartService RENTED_BOOK_CART_SERVICE;
+  private final UserService USER_SERVICE;
 
 
   public RentedBook addRentedBook(Book book) {
@@ -33,12 +34,12 @@ public class RentedBookService {
   }
 
   public Optional<Set<RentedBook>> getAllUserRentedBooks(String userEmail) {
-    if (RENTED_BOOK_CART_SERVICE.getRentedBookCart(userEmail).isEmpty()) {
+    if(USER_SERVICE.getUserByEmail(userEmail).isEmpty()){
       Optional<Set<RentedBook>> emptySet = Optional.empty();
       return emptySet;
     }
     Optional<Set<RentedBook>> rentedBooks =
-        Optional.of(RENTED_BOOK_CART_SERVICE.getRentedBookCart(userEmail).get().getRentedBooks());
+        Optional.of(USER_SERVICE.getUserByEmail(userEmail).get().getCart().getRentedBooks());
     return rentedBooks;
   }
 

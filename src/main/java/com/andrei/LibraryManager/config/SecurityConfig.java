@@ -29,6 +29,7 @@ public class SecurityConfig {
                 .requestMatchers("/admin/**").hasAnyAuthority("ADMIN_ROLE")
                 .anyRequest().authenticated()
         )
+//        .logout((logout) -> logout.logoutUrl("logout/**"))
         .sessionManagement(session -> session.sessionCreationPolicy(STATELESS))
         .addFilterBefore(JWT_FILTER, UsernamePasswordAuthenticationFilter.class);
     http.csrf(crsf -> crsf.disable());

@@ -12,7 +12,6 @@ import com.andrei.LibraryManager.repositories.RentedBookCartRepository;
 public class RentedBookCartService {
 
   private final RentedBookCartRepository RENTED_BOOK_CART_REPOSITORY;
-  private final UserService USER_SERVICE;
 
 
   public RentedBookCart addRentedBookCart() {
@@ -27,15 +26,5 @@ public class RentedBookCartService {
 
   public RentedBookCart updateRentedBookCart(RentedBookCart cart) {
     return RENTED_BOOK_CART_REPOSITORY.save(cart);
-  }
-
-  public Optional<RentedBookCart> getRentedBookCart(String userEmail) {
-    if (USER_SERVICE.getUserByEmail(userEmail).isEmpty()) {
-      Optional<RentedBookCart> emptyCart = Optional.empty();
-      return emptyCart;
-    }
-    Optional<RentedBookCart> rentedBookCart = Optional.of(
-        USER_SERVICE.getUserByEmail(userEmail).get().getCart());
-    return rentedBookCart;
   }
 }
