@@ -1,5 +1,6 @@
 package com.andrei.LibraryManager.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -10,6 +11,9 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -40,13 +44,16 @@ public class User {
   /**
    * The first name of the user
    */
+
   @Column
+  @Size(max = 25)
   private String userName;
 
   /**
    * The surname of the user
    */
   @Column
+  @Size(max = 25)
   private String userSurname;
 
 
@@ -54,12 +61,17 @@ public class User {
    * Email of the user that used to registration or authorization to the system
    */
 
-  @Column(nullable = false)
+  @NotBlank
+  @Size(max = 30)
+  @Email
   private String email;
 
   /**
    * Password for the registration of authorization
    */
+  @NotBlank
+  @Size(max = 150)
+  @JsonIgnore
   @Column
   private String password;
 

@@ -1,14 +1,13 @@
 package com.andrei.LibraryManager.controller;
 
-import com.andrei.LibraryManager.dto.ChangePasswordRequest;
-import com.andrei.LibraryManager.dto.ChangePersonalDataRequest;
+import com.andrei.LibraryManager.dto.requests.ChangePasswordRequest;
+import com.andrei.LibraryManager.dto.requests.ChangePersonalDataRequest;
 import com.andrei.LibraryManager.entities.RentedBook;
 import com.andrei.LibraryManager.entities.User;
 import com.andrei.LibraryManager.services.UserService;
-import java.security.Principal;
+import jakarta.validation.Valid;
 import java.util.Set;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,7 +35,7 @@ public class ClientController {
   }
 
   @PutMapping("change_password")
-  public ResponseEntity<?> changePassword(@RequestBody ChangePasswordRequest request) {
+  public ResponseEntity<?> changePassword(@Valid @RequestBody ChangePasswordRequest request) {
     String username = SecurityContextHolder.getContext().getAuthentication()
         .getName();
     if (!PASSWORD_ENCODER.matches(request.getOldPassword(),
@@ -50,7 +49,7 @@ public class ClientController {
   }
 
   @PutMapping("change_personal_data")
-  public ResponseEntity<?> changePersonalData(@RequestBody ChangePersonalDataRequest request) {
+  public ResponseEntity<?> changePersonalData(@Valid @RequestBody ChangePersonalDataRequest request) {
     String username = SecurityContextHolder.getContext().getAuthentication().getName();
     User user = USER_SERVICE.getUserByEmail(username).get();
     user.setUserName(request.getName());

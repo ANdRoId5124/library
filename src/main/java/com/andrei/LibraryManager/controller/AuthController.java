@@ -2,14 +2,13 @@ package com.andrei.LibraryManager.controller;
 
 
 import com.andrei.LibraryManager.config.jwt.JwtProvider;
-import com.andrei.LibraryManager.dto.AuthDto;
+import com.andrei.LibraryManager.dto.requests.AuthRequest;
 import com.andrei.LibraryManager.dto.AuthResponse;
-import com.andrei.LibraryManager.dto.IntrospectRequest;
-import com.andrei.LibraryManager.dto.RegistrationDto;
+import com.andrei.LibraryManager.dto.requests.IntrospectRequest;
+import com.andrei.LibraryManager.dto.requests.RegistrationRequest;
 import com.andrei.LibraryManager.entities.User;
-import com.andrei.LibraryManager.services.RentedBookCartService;
-import com.andrei.LibraryManager.services.RoleService;
 import com.andrei.LibraryManager.services.UserService;
+import jakarta.validation.Valid;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -30,7 +29,7 @@ public class AuthController {
 
 
   @PostMapping("/registration")
-  public ResponseEntity<?> registrate(@RequestBody RegistrationDto dto) {
+  public ResponseEntity<?> registrate(@Valid @RequestBody RegistrationRequest dto) {
     if(USER_SERVICE.getUserByEmail(dto.getEmail()).isPresent()){
       return new ResponseEntity<>("user with that email exist", HttpStatus.CONFLICT);
     }
@@ -38,7 +37,7 @@ public class AuthController {
   }
 
   @PostMapping("/login")
-  public ResponseEntity<AuthResponse> login(@RequestBody AuthDto dto) {
+  public ResponseEntity<AuthResponse> login(@Valid @RequestBody AuthRequest dto) {
     Optional<User> userOptional = USER_SERVICE.getUserByEmailAndPassword(dto.getEmail(),
         dto.getPassword());
 
