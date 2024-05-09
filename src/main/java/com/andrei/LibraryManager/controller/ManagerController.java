@@ -1,6 +1,7 @@
 package com.andrei.LibraryManager.controller;
 
 import com.andrei.LibraryManager.dto.BookDto;
+import com.andrei.LibraryManager.dto.requests.RentBookRequest;
 import com.andrei.LibraryManager.entities.Book;
 import com.andrei.LibraryManager.entities.RentedBook;
 import com.andrei.LibraryManager.entities.User;
@@ -8,6 +9,7 @@ import com.andrei.LibraryManager.services.BookService;
 import com.andrei.LibraryManager.services.RentedBookCartService;
 import com.andrei.LibraryManager.services.RentedBookService;
 import com.andrei.LibraryManager.services.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -30,24 +32,23 @@ public class ManagerController {
   private final RentedBookCartService RENTED_BOOK_CART_SERVICE;
 
   @PostMapping("rent_book")
-  public ResponseEntity<?> rent(@RequestParam(name = "email") String email,
-      @RequestParam(name = "title") String title, @RequestParam(name = "author") String author) {
-    if (USER_SERVICE.getUserByEmail(email).isEmpty()) {
-      return new ResponseEntity<>("Can't find client with email " + email,
+  public ResponseEntity<?> rent(@Valid @RequestBody RentBookRequest request) {
+    if (USER_SERVICE.getUserByEmail(request.getEmail()).isEmpty()) {
+      return new ResponseEntity<>("Can't find client with email " + request.getEmail(),
           HttpStatus.NOT_FOUND);
     }
-    if (BOOK_SERVICE.getBookByTitleAndByAuthor(title, author).isEmpty()) {
+    if (BOOK_SERVICE.getBookByTitleAndByAuthor(request.getTitle(), request.getAuthor()).isEmpty()) {
       return new ResponseEntity<>("Book not found", HttpStatus.NOT_FOUND);
     }
-    if (RENTED_BOOK_SERVICE.getRentedBook(email, title).isPresent()
-        && !RENTED_BOOK_SERVICE.getRentedBook(email, title).get().isReturned()) {
+    if (RENTED_BOOK_SERVICE.getRentedBook(request.getEmail(), request.getTitle()).isPresent()
+        && !RENTED_BOOK_SERVICE.getRentedBook(request.getEmail(), request.getTitle()).get().isReturned()) {
       return new ResponseEntity<>("Sorry you already rented book",
           HttpStatus.CONFLICT);
     }
-    User user = USER_SERVICE.getUserByEmail(email).get();
+    User user = USER_SERVICE.getUserByEmail(request.getEmail()).get();
     user.getCart().getRentedBooks().add(
         RENTED_BOOK_SERVICE.addRentedBook(
-            BOOK_SERVICE.getBookByTitleAndByAuthor(title, author).get()));
+            BOOK_SERVICE.getBookByTitleAndByAuthor(request.getTitle(), request.getAuthor()).get()));
     return new ResponseEntity<>(RENTED_BOOK_CART_SERVICE.updateRentedBookCart(user.getCart()),
         HttpStatus.OK);
   }

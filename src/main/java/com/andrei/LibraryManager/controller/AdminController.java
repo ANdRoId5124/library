@@ -1,7 +1,9 @@
 package com.andrei.LibraryManager.controller;
 
-import com.andrei.LibraryManager.dto.RegistrationDto;
+import com.andrei.LibraryManager.dto.requests.DeleteUserRequest;
+import com.andrei.LibraryManager.dto.requests.RegistrationRequest;
 import com.andrei.LibraryManager.services.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -22,7 +24,7 @@ public class AdminController {
 
 
   @PostMapping("/manager_registration")
-  public ResponseEntity<?> registrate(@RequestBody RegistrationDto dto) {
+  public ResponseEntity<?> registrate(@Valid @RequestBody RegistrationRequest dto) {
     if(USER_SERVICE.getUserByEmail(dto.getEmail()).isPresent()){
       return new ResponseEntity<>("user with that email exist", HttpStatus.CONFLICT);
     }
@@ -30,12 +32,12 @@ public class AdminController {
   }
 
   @DeleteMapping("/delete_user")
-  public ResponseEntity<?> deleteUser(@RequestParam String email){
-    if(USER_SERVICE.getUserByEmail(email).isEmpty()){
+  public ResponseEntity<?> deleteUser(@Valid @RequestBody DeleteUserRequest request){
+    if(USER_SERVICE.getUserByEmail(request.getEmail()).isEmpty()){
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
     USER_SERVICE.deleteUser(
-        USER_SERVICE.getUserByEmail(email).get()
+        USER_SERVICE.getUserByEmail(request.getEmail()).get()
     );
     return new ResponseEntity<>(HttpStatus.OK);
   }
