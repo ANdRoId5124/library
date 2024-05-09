@@ -25,25 +25,16 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthController {
 
   private final UserService USER_SERVICE;
-  private final RentedBookCartService RENTED_BOOK_CART_SERVICE;
-  private final RoleService ROLE_SERVICE;
-
   private final JwtProvider PROVIDER;
+  private final String ROLE_NAME = "CLIENT_ROLE";
 
 
   @PostMapping("/registration")
   public ResponseEntity<?> registrate(@RequestBody RegistrationDto dto) {
-    if (USER_SERVICE.getUserByEmail(dto.getEmail()).isPresent()) {
-      return new ResponseEntity<>("User with email " +
-          dto.getEmail() + " already exist", HttpStatus.CONFLICT);
+    if(USER_SERVICE.getUserByEmail(dto.getEmail()).isPresent()){
+      return new ResponseEntity<>("user with that email exist", HttpStatus.CONFLICT);
     }
-    if (ROLE_SERVICE.getRoleByName("CLIENT_ROLE").isEmpty()) {
-      return new ResponseEntity<>("Role not found", HttpStatus.NOT_FOUND);
-    }
-    return new ResponseEntity<>(USER_SERVICE.createUser(User.builder().userName(dto.getName()).
-        userSurname(dto.getSurname()).email(dto.getEmail()).password(dto.getPassword()).role(
-            ROLE_SERVICE.getRoleByName("CLIENT_ROLE").get()).
-        cart(RENTED_BOOK_CART_SERVICE.addRentedBookCart()).build()), HttpStatus.OK);
+    return new ResponseEntity<>(USER_SERVICE.createUser(dto, ROLE_NAME), HttpStatus.OK);
   }
 
   @PostMapping("/login")
