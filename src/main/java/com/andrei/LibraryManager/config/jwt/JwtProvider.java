@@ -6,24 +6,26 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class JwtProvider {
 
   @Value("${jwt.secret}")
   private String jwtSecret;
 
-  public String generatedAccessToken(String login){
+  public String generatedAccessToken(String login) {
     return generateToken(login, TimeUnit.MINUTES.toMillis(60));
   }
 
-  public String generateRefreshToken(String login){
+  public String generateRefreshToken(String login) {
     return generateToken(login, TimeUnit.DAYS.toMillis(1));
   }
 
-  private String generateToken(String login, long expirationTime){
+  private String generateToken(String login, long expirationTime) {
     return Jwts.builder()
         .setSubject(login)
         .setIssuedAt(new Date(System.currentTimeMillis()))
@@ -32,22 +34,21 @@ public class JwtProvider {
         .compact();
   }
 
-  public boolean validate(String token){
+  public boolean validate(String token) {
     try {
       Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
       return true;
-    }
-    catch (Exception e){
-      System.out.println("invalid token");
+    } catch (Exception e) {
+      log.error("invalid token");
     }
     return false;
   }
 
-  public String getLoginFromToken(String token){
+  public String getLoginFromToken(String token) {
     return parseToken(token).getBody().getSubject();
   }
 
-  public Jws<Claims> parseToken(String token){
+  public Jws<Claims> parseToken(String token) {
     return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token);
   }
 }

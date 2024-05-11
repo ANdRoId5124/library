@@ -15,9 +15,8 @@ import com.andrei.LibraryManager.repositories.RentedBookRepository;
 @RequiredArgsConstructor
 public class RentedBookService {
 
-  private final RentedBookRepository RENTED_BOOK_REPOSITORY;
-  private final RentedBookCartService RENTED_BOOK_CART_SERVICE;
-  private final UserService USER_SERVICE;
+  private final RentedBookRepository rentedBookRepository;
+  private final UserService userService;
 
 
   public RentedBook addRentedBook(Book book) {
@@ -26,20 +25,20 @@ public class RentedBookService {
     RentedBook rentedBook = RentedBook.builder().book(book).
         rentalDate(new Date(System.currentTimeMillis())).returnDate(c.getTime()).
         isReturned(false).build();
-    return RENTED_BOOK_REPOSITORY.save(rentedBook);
+    return rentedBookRepository.save(rentedBook);
   }
 
   public RentedBook updateRentedBook(RentedBook rentedBook) {
-    return RENTED_BOOK_REPOSITORY.save(rentedBook);
+    return rentedBookRepository.save(rentedBook);
   }
 
   public Optional<Set<RentedBook>> getAllUserRentedBooks(String userEmail) {
-    if(USER_SERVICE.getUserByEmail(userEmail).isEmpty()){
+    if(userService.getUserByEmail(userEmail).isEmpty()){
       Optional<Set<RentedBook>> emptySet = Optional.empty();
       return emptySet;
     }
     Optional<Set<RentedBook>> rentedBooks =
-        Optional.of(USER_SERVICE.getUserByEmail(userEmail).get().getCart().getRentedBooks());
+        Optional.of(userService.getUserByEmail(userEmail).get().getCart().getRentedBooks());
     return rentedBooks;
   }
 

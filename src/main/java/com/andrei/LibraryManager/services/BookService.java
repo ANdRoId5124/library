@@ -10,22 +10,22 @@ import com.andrei.LibraryManager.repositories.BookRepository;
 @RequiredArgsConstructor
 public class BookService {
 
-  private final BookRepository BOOK_REPOSITORY;
+  private final BookRepository bookRepository;
 
 
   public Book addBook(Book book) {
-    return BOOK_REPOSITORY.save(book);
+    return bookRepository.save(book);
   }
 
   public Book updateBook(Book book) {
-    return BOOK_REPOSITORY.save(book);
+    return bookRepository.save(book);
   }
 
   public void deleteBook(Book book) {
-    BOOK_REPOSITORY.delete(book);
+    bookRepository.delete(book);
   }
 
   public Optional<Book> getBookByTitleAndByAuthor(String title, String author) {
-    return BOOK_REPOSITORY.findBookByTitleAndAuthor(title, author);
+    return bookRepository.findBookByTitleAndAuthor(title, author);
   }
 }

@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -19,25 +18,25 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("admin")
 public class AdminController {
 
-  private final UserService USER_SERVICE;
-  private final String ROLE_NAME = "MANAGER_ROLE";
+  private final UserService userService;
+  private final String roleName = "MANAGER_ROLE";
 
 
   @PostMapping("/manager_registration")
   public ResponseEntity<?> registrate(@Valid @RequestBody RegistrationRequest dto) {
-    if(USER_SERVICE.getUserByEmail(dto.getEmail()).isPresent()){
+    if(userService.getUserByEmail(dto.getEmail()).isPresent()){
       return new ResponseEntity<>("user with that email exist", HttpStatus.CONFLICT);
     }
-    return new ResponseEntity<>(USER_SERVICE.createUser(dto, ROLE_NAME), HttpStatus.OK);
+    return new ResponseEntity<>(userService.createUser(dto, roleName), HttpStatus.OK);
   }
 
   @DeleteMapping("/delete_user")
   public ResponseEntity<?> deleteUser(@Valid @RequestBody DeleteUserRequest request){
-    if(USER_SERVICE.getUserByEmail(request.getEmail()).isEmpty()){
+    if(userService.getUserByEmail(request.getEmail()).isEmpty()){
       return new ResponseEntity<>(HttpStatus.NOT_FOUND);
     }
-    USER_SERVICE.deleteUser(
-        USER_SERVICE.getUserByEmail(request.getEmail()).get()
+    userService.deleteUser(
+        userService.getUserByEmail(request.getEmail()).get()
     );
     return new ResponseEntity<>(HttpStatus.OK);
   }
