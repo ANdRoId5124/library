@@ -23,14 +23,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequiredArgsConstructor
 public class ClientController {
 
-  private final UserService USER_SERVICE;
-  private final PasswordEncoder PASSWORD_ENCODER;
+  private final UserService userService;
+  private final PasswordEncoder passwordEncoder;
 
   @GetMapping("get_rented_books")
   public Set<RentedBook> getRentedBooks() {
     String username = SecurityContextHolder.getContext().getAuthentication()
         .getName();
-    User user = USER_SERVICE.getUserByEmail(username).get();
+    User user = userService.getUserByEmail(username).get();
     return user.getCart().getRentedBooks();
   }
 
@@ -38,24 +38,24 @@ public class ClientController {
   public ResponseEntity<?> changePassword(@Valid @RequestBody ChangePasswordRequest request) {
     String username = SecurityContextHolder.getContext().getAuthentication()
         .getName();
-    if (!PASSWORD_ENCODER.matches(request.getOldPassword(),
-        USER_SERVICE.getUserByEmail(username).get().getPassword())) {
+    if (!passwordEncoder.matches(request.getOldPassword(),
+        userService.getUserByEmail(username).get().getPassword())) {
       return new ResponseEntity<>("Wrong old password", HttpStatus.BAD_REQUEST);
     }
-    User user = USER_SERVICE.getUserByEmail(username).get();
-    user.setPassword(PASSWORD_ENCODER.encode(request.getNewPassword()));
-    USER_SERVICE.updateUser(user);
+    User user = userService.getUserByEmail(username).get();
+    user.setPassword(passwordEncoder.encode(request.getNewPassword()));
+    userService.updateUser(user);
     return new ResponseEntity<>(HttpStatus.OK);
   }
 
   @PutMapping("change_personal_data")
   public ResponseEntity<?> changePersonalData(@Valid @RequestBody ChangePersonalDataRequest request) {
     String username = SecurityContextHolder.getContext().getAuthentication().getName();
-    User user = USER_SERVICE.getUserByEmail(username).get();
+    User user = userService.getUserByEmail(username).get();
     user.setUserName(request.getName());
     user.setEmail(request.getEmail());
     user.setUserSurname(request.getSurname());
-    USER_SERVICE.updateUser(user);
+    userService.updateUser(user);
     return new ResponseEntity<>(HttpStatus.OK);
   }
 }

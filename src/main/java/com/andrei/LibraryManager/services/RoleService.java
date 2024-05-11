@@ -10,21 +10,21 @@ import com.andrei.LibraryManager.repositories.RoleRepository;
 @RequiredArgsConstructor
 public class RoleService {
 
-  private final RoleRepository ROLE_REPOSITORY;
+  private final RoleRepository roleRepository;
 
   public Role addRole(Role role) {
-    return ROLE_REPOSITORY.save(role);
+    return roleRepository.save(role);
   }
 
   public Role updateRole(Role role) {
-    return ROLE_REPOSITORY.save(role);
+    return roleRepository.save(role);
   }
 
   public void deleteRole(Role role) {
-    ROLE_REPOSITORY.delete(role);
+    roleRepository.delete(role);
   }
 
   public Optional<Role> getRoleByName(String roleName) {
-    return ROLE_REPOSITORY.findRoleByRoleName(roleName);
+    return roleRepository.findRoleByRoleName(roleName);
   }
 }

@@ -11,6 +11,9 @@ import com.andrei.LibraryManager.services.UserService;
 import jakarta.validation.Valid;
 import java.util.Optional;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -23,29 +26,29 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("auth")
 public class AuthController {
 
-  private final UserService USER_SERVICE;
-  private final JwtProvider PROVIDER;
-  private final String ROLE_NAME = "CLIENT_ROLE";
+  private final UserService userService;
+  private final JwtProvider provider;
+  private final String roleName = "CLIENT_ROLE";
 
 
   @PostMapping("/registration")
   public ResponseEntity<?> registrate(@Valid @RequestBody RegistrationRequest dto) {
-    if(USER_SERVICE.getUserByEmail(dto.getEmail()).isPresent()){
+    if (userService.getUserByEmail(dto.getEmail()).isPresent()) {
       return new ResponseEntity<>("user with that email exist", HttpStatus.CONFLICT);
     }
-    return new ResponseEntity<>(USER_SERVICE.createUser(dto, ROLE_NAME), HttpStatus.OK);
+    return new ResponseEntity<>(userService.createUser(dto, roleName), HttpStatus.OK);
   }
 
   @PostMapping("/login")
   public ResponseEntity<AuthResponse> login(@Valid @RequestBody AuthRequest dto) {
-    Optional<User> userOptional = USER_SERVICE.getUserByEmailAndPassword(dto.getEmail(),
+    Optional<User> userOptional = userService.getUserByEmailAndPassword(dto.getEmail(),
         dto.getPassword());
 
     if (userOptional.isEmpty()) {
       return new ResponseEntity<>(HttpStatus.UNAUTHORIZED);
     }
-    String accessToken = PROVIDER.generatedAccessToken(dto.getEmail());
-    String refreshToken = PROVIDER.generateRefreshToken(dto.getEmail());
+    String accessToken = provider.generatedAccessToken(dto.getEmail());
+    String refreshToken = provider.generateRefreshToken(dto.getEmail());
 
     return new ResponseEntity<>(new AuthResponse(accessToken, refreshToken),
         HttpStatus.OK);
@@ -53,9 +56,9 @@ public class AuthController {
 
   @PostMapping("/introspect")
   public ResponseEntity<AuthResponse> introspect(@RequestBody IntrospectRequest request) {
-    boolean isValid = PROVIDER.validate(request.getRefreshToken());
+    boolean isValid = provider.validate(request.getRefreshToken());
     if (isValid) {
-      String login = PROVIDER.getLoginFromToken(request.getRefreshToken());
+      String login = provider.getLoginFromToken(request.getRefreshToken());
       return getAuth(login);
     }
     return new ResponseEntity<>(
@@ -63,8 +66,8 @@ public class AuthController {
   }
 
   private ResponseEntity<AuthResponse> getAuth(String login) {
-    String accessToken = PROVIDER.generatedAccessToken(login);
-    String refreshToken = PROVIDER.generateRefreshToken(login);
+    String accessToken = provider.generatedAccessToken(login);
+    String refreshToken = provider.generateRefreshToken(login);
 
     return new ResponseEntity<>(new AuthResponse(accessToken, refreshToken),
         HttpStatus.OK);
